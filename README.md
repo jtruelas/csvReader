@@ -39,8 +39,6 @@ Assuming you are in the directory where the clone was made, you should notice so
 
 This command will give an output message summarizing the number of records inserted and the total number of records that exist in that specific table.
 
-Initially the number of records inserted differs by one from the total existing records since the first line read is taken as the fieldnames or column titles. The total number is counting only the rows that have been populated, excluding the column titles.
-
 You can view the actual database created by this script (some.db) by:
 
 _*Note: table names are the file names without the file extension_
