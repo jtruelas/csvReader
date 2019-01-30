@@ -50,7 +50,7 @@ for row in rows:
 # Print summary of records
 numrows = c.execute("SELECT COUNT(*) FROM " + tablename + ";")
 count = c.fetchone()[0]
-print(str(fileinput.lineno()) +
+print(str(fileinput.lineno() - 1) +
       " records inserted, total records are " + str(count))
 
 # Close database connection
