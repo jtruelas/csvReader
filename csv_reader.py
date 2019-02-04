@@ -29,8 +29,12 @@ with fileinput.input() as f:
     try:
         cols = reader.__next__()
         filename = fileinput.filename()
-        for row in reader:
-            rows.append(row)
+        if filename.endswith('.csv'):
+            for row in reader:
+                rows.append(row)
+        else:
+            print("Incorrect file, try again")
+            sys.exit(1)
     except csv.Error as e:
         sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
 
@@ -39,10 +43,10 @@ c = db.cursor()
 # Create table with data
 tablename = filename.split('.')[0]
 c.execute("CREATE TABLE IF NOT EXISTS " + tablename + " \
-          (id INTEGER PRIMARY KEY AUTOINCREMENT, " + ",".join(cols) + ");")
+  (id INTEGER PRIMARY KEY AUTOINCREMENT, " + ",".join(cols) + ");")
 
 query = "INSERT INTO " + tablename + "({0}) VALUES({1});\
-        ".format(','.join(cols), ','.join('?' * len(cols)))
+".format(','.join(cols), ','.join('?' * len(cols)))
 
 for row in rows:
     c.execute(query, row)
@@ -51,7 +55,7 @@ for row in rows:
 numrows = c.execute("SELECT COUNT(*) FROM " + tablename + ";")
 count = c.fetchone()[0]
 print(str(fileinput.lineno() - 1) +
-      " records inserted, total records are " + str(count))
+  " records inserted, total records are " + str(count))
 
 # Close database connection
 db.commit()
