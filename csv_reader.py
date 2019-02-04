@@ -24,19 +24,23 @@ cols = []
 rows = []
 
 # Reads csv file argument
-with fileinput.input() as f:
-    reader = csv.reader(f)
-    try:
-        cols = reader.__next__()
-        filename = fileinput.filename()
-        if filename.endswith('.csv'):
-            for row in reader:
-                rows.append(row)
-        else:
-            print("Incorrect file, try again")
-            sys.exit(1)
-    except csv.Error as e:
-        sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
+if len(sys.argv) == 2:
+    with fileinput.input() as f:
+        reader = csv.reader(f)
+        try:
+            cols = reader.__next__()
+            filename = fileinput.filename()
+            if filename.endswith('.csv'):
+                for row in reader:
+                    rows.append(row)
+            else:
+                print("Incorrect file, try again")
+                sys.exit(-1)
+        except csv.Error as e:
+            sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
+else:
+    print("Usage:", sys.argv[0], "SOME-CSV-FILE")
+    sys.exit(-1)
 
 c = db.cursor()
 
